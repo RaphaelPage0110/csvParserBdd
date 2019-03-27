@@ -113,6 +113,12 @@ public class Main {
 
   }
 
+  /**
+   * Split a string using commas, only if this comma is not surrounded by quotes
+   * This is needed to take into account commas that could be in a string
+   * @param stringToManage
+   * @return
+   */
   private static String[] splitCsvLineOnCommas(String stringToManage){
 
     String otherThanQuote = " [^\"] ";
@@ -132,6 +138,11 @@ public class Main {
     return stringToManage.split(regex, -1);
   }
 
+  /**
+   * Check if a string is a number
+   * @param stringToCheck
+   * @return
+   */
   private static boolean isNumeric(String stringToCheck) {
 
     boolean numeric = true;
@@ -143,6 +154,11 @@ public class Main {
     return numeric;
   }
 
+  /**
+   * Check if a string contains the words "True" or "False"
+   * @param stringToCheck
+   * @return
+   */
   private static boolean isTrueFalse(String stringToCheck) {
     return (stringToCheck.equals("True") || stringToCheck.equals("False"));
   }

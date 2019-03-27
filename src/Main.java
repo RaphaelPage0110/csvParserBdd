@@ -5,11 +5,11 @@ public class Main {
   public static void main(String[] args) {
 
     try {
-      /*
+
       String reading_path = "datasets\\USvideos.csv";
       String writing_path_dimVideo = "cleanCsv\\dim_video\\dim_video_United_States.csv";
       String writing_path_fait = "cleanCsv\\fait\\fait_United_States.csv";
-      String countryName = "United States";*/
+      String countryName = "United States";
 
       /*
       String reading_path = "datasets\\CAvideos.csv";
@@ -27,13 +27,13 @@ public class Main {
       String reading_path = "datasets\\FRvideos.csv";
       String writing_path_dimVideo = "cleanCsv\\dim_video\\dim_video_France.csv";
       String writing_path_fait = "cleanCsv\\fait\\fait_France.csv";
-      String countryName = "France";*/
+      String countryName = "France";
 
-
+/*
       String reading_path = "datasets\\GBvideos.csv";
       String writing_path_dimVideo = "cleanCsv\\dim_video\\dim_video_United_Kingdom.csv";
       String writing_path_fait = "cleanCsv\\fait\\fait_United Kingdom.csv";
-      String countryName = "United Kingdom";
+      String countryName = "United Kingdom";*/
 
 
       BufferedReader source_file = new BufferedReader(new FileReader(reading_path));
@@ -50,8 +50,8 @@ public class Main {
         String chaine = source_file.readLine();
         String[] tabChaine = splitCsvLineOnCommas(chaine);
 
-        writerDimVideo.write(tabChaine[0] + ", "+ tabChaine[1] + ", "+tabChaine[2] + ", "+tabChaine[3] + ", "+tabChaine[5] + ", "+tabChaine[12] + ", " + tabChaine[13] + ", " + tabChaine[14] +"\n");
-        writerFait.write(tabChaine[0] + ", cle_pays, "+tabChaine[4] + ", "+tabChaine[7] + ", "+tabChaine[8]+ ", "+tabChaine[9]+ ", "+tabChaine[10] +"\n" );
+        writerDimVideo.write(tabChaine[0] + ","+ tabChaine[1] + ","+tabChaine[2] + ","+tabChaine[3] + ","+tabChaine[5] + ","+tabChaine[12] + "," + tabChaine[13] + "," + tabChaine[14] +"\n");
+        writerFait.write(tabChaine[0] + ",cle_pays,"+tabChaine[4] + ","+tabChaine[7] + ","+tabChaine[8]+ ","+tabChaine[9]+ ","+tabChaine[10] +"\n" );
 
 
         while ((chaine = source_file.readLine()) != null) {
@@ -94,10 +94,9 @@ public class Main {
             }
 
             if (goodRow){
-              writerDimVideo.write(tabChaine[0] + ", "+ tabChaine[1] + ", "+tabChaine[2] + ", "+tabChaine[3] + ", "+tabChaine[5] + ", "+tabChaine[12] + ", " + tabChaine[13] + ", " + tabChaine[14] +"\n");
-              writerFait.write(tabChaine[0] + ", " + countryName + ", " + tabChaine[4] + ", "+tabChaine[7] + ", "+tabChaine[8]+ ", "+tabChaine[9]+ ", "+tabChaine[10] +"\n" );
+              writerDimVideo.write(tabChaine[0] + ","+ tabChaine[1] + ","+tabChaine[2] + ","+tabChaine[3] + ","+tabChaine[5] + ","+tabChaine[12] + "," + tabChaine[13] + "," + tabChaine[14] +"\n");
+              writerFait.write(tabChaine[0] + "," + countryName + "," + tabChaine[4] + ","+tabChaine[7] + ","+tabChaine[8]+ ","+tabChaine[9]+ ","+tabChaine[10] +"\n" );
             }
-
           }
         }
 

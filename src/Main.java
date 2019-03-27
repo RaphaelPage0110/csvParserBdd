@@ -1,10 +1,13 @@
 import java.io.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main {
 
   public static void main(String[] args) {
 
     try {
+
 
       String reading_path = "datasets\\USvideos.csv";
       String writing_path_dimVideo = "cleanCsv\\dim_video\\dim_video_United_States.csv";
@@ -17,17 +20,18 @@ public class Main {
       String writing_path_fait = "cleanCsv\\fait\\fait_Canada.csv";
       String countryName = "Canada";*/
 
+
       /*
       String reading_path = "datasets\\DEvideos.csv";
       String writing_path_dimVideo = "cleanCsv\\dim_video\\dim_video_Germany.csv";
       String writing_path_fait = "cleanCsv\\fait\\fait_Germany.csv";
       String countryName = "Germany";*/
 
-      /*
-      String reading_path = "datasets\\FRvideos.csv";
+
+      /*String reading_path = "datasets\\FRvideos.csv";
       String writing_path_dimVideo = "cleanCsv\\dim_video\\dim_video_France.csv";
       String writing_path_fait = "cleanCsv\\fait\\fait_France.csv";
-      String countryName = "France";
+      String countryName = "France";*/
 
 /*
       String reading_path = "datasets\\GBvideos.csv";
@@ -45,24 +49,48 @@ public class Main {
 
       final FileWriter writerDimVideo = new FileWriter(target_file_dimVideo);
       final FileWriter writerFait = new FileWriter(target_file_fait);
+      Set<String> setCleId = new HashSet<>();
 
       try {
         String chaine = source_file.readLine();
         String[] tabChaine = splitCsvLineOnCommas(chaine);
 
-        writerDimVideo.write(tabChaine[0] + ","+ tabChaine[1] + ","+tabChaine[2] + ","+tabChaine[3] + ","+tabChaine[5] + ","+tabChaine[12] + "," + tabChaine[13] + "," + tabChaine[14] +"\n");
-        writerFait.write(tabChaine[0] + ",cle_pays,"+tabChaine[4] + ","+tabChaine[7] + ","+tabChaine[8]+ ","+tabChaine[9]+ ","+tabChaine[10] +"\n" );
+        writerDimVideo.write(tabChaine[0] + ","+ tabChaine[5] + ","+tabChaine[2] + ","+tabChaine[3]  + ","+tabChaine[12] + "," + tabChaine[13] + "," + tabChaine[14] +"\n");
+        writerFait.write(tabChaine[0] + ",cle_pays,"+tabChaine[4]+ ","+tabChaine[1] + ","+tabChaine[7] + ","+tabChaine[8]+ ","+tabChaine[9]+ ","+tabChaine[10] +"\n" );
 
 
         while ((chaine = source_file.readLine()) != null) {
 
-          //only remains true if the true has an adequate format
+          tabChaine = splitCsvLineOnCommas(chaine);
+
+          //only remains true if the row has an adequate format
           boolean goodRow = true;
 
-          tabChaine = splitCsvLineOnCommas(chaine);
+          //remains true if the video isn't in the dim_video
+          boolean addToVideo = true;
 
           //check if the row has an adequate number of cells
           if(tabChaine.length == 16){
+
+            //if the video isn't in the dim_video already, we add it
+            if (setCleId.add(tabChaine[0])){
+
+              //check if the publish_time has an adequate format and transforms it to fit the databases format
+              if (tabChaine[5].length() == 24) {
+                String badformat = tabChaine[5];
+
+                String[] badformatSplit = badformat.split("T");
+
+                tabChaine[5] = badformatSplit[0];
+
+              } else {
+                goodRow = false;
+              }
+
+            }
+            else {
+              addToVideo = false;
+            }
 
             //check if the trending_date has an adequate format and transforms it to fit the databases format
             if (tabChaine[1].length() == 8){
@@ -77,25 +105,16 @@ public class Main {
               goodRow = false;
             }
 
-            //check if the publish_time has an adequate format and transforms it to fit the databases format
-            if (tabChaine[5].length() == 24) {
-              String badformat = tabChaine[4];
-
-              String[] badformatSplit = tabChaine[1].split("T");
-
-              tabChaine[5] = badformatSplit[0];
-
-            } else {
-              goodRow = false;
-            }
-
             if(!goodRow || !isTrueFalse(tabChaine[14]) || !isTrueFalse(tabChaine[13]) || !isTrueFalse(tabChaine[12]) || !isNumeric(tabChaine[4]) || !isNumeric(tabChaine[7]) || !isNumeric(tabChaine[8]) || !isNumeric(tabChaine[9]) || !isNumeric(tabChaine[10])){
               goodRow = false;
             }
 
             if (goodRow){
-              writerDimVideo.write(tabChaine[0] + ","+ tabChaine[1] + ","+tabChaine[2] + ","+tabChaine[3] + ","+tabChaine[5] + ","+tabChaine[12] + "," + tabChaine[13] + "," + tabChaine[14] +"\n");
-              writerFait.write(tabChaine[0] + "," + countryName + "," + tabChaine[4] + ","+tabChaine[7] + ","+tabChaine[8]+ ","+tabChaine[9]+ ","+tabChaine[10] +"\n" );
+              writerFait.write(tabChaine[0] + "," + countryName + "," + tabChaine[4]+ ","+tabChaine[1] + ","+tabChaine[7] + ","+tabChaine[8]+ ","+tabChaine[9]+ ","+tabChaine[10] +"\n" );
+            }
+
+            if (goodRow && addToVideo ){
+              writerDimVideo.write(tabChaine[0] + ","+ tabChaine[5] + ","+tabChaine[2] + ","+tabChaine[3]  + ","+tabChaine[12] + "," + tabChaine[13] + "," + tabChaine[14] +"\n");
             }
           }
         }
